@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import speech_recognition as sr #SpeechRecognition library assigned to sr
+# import speech_recognition as sr #SpeechRecognition library assigned to sr
 
 app = Flask(__name__) #??
 
