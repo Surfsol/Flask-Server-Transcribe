@@ -15,10 +15,11 @@ def transcribe_audio():
     with sr.AudioFile(audio_file) as source:
         print("4 inside")
         audio_data = recognizer.record(source) # audio file into audio_data, making it ready for transcription
-        print(audio_data)
+        print('5', audio_data)
         try:
+            print('6', audio_data)
             text = recognizer.recognize_sphinx(audio_data)
-            print("Sphinx thinks you said " + text)
+            print("7 Sphinx thinks you said " + text)
             return jsonify({"text": text})
         except sr.UnknownValueError:
             print("Sphinx could not understand audio")
