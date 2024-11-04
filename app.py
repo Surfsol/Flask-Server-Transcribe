@@ -5,7 +5,7 @@ app = Flask(__name__) #??
 
 @app.route("/transcribe", methods=["POST"]) # only accpets post requests
 def transcribe_audio():
-    print("1 Endpoint '/transcribe' was hit")
+    print("1 Endpoint '/transcribe' was hit", request.files)
     if "audio" not in request.files:
         return jsonify({"error": "No audio file provided"}), 400
     print("2 Endpoint audio found")
