@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-# import speech_recognition as sr #SpeechRecognition library assigned to sr
+import speech_recognition as sr #SpeechRecognition library assigned to sr
 
 app = Flask(__name__) #??
 
@@ -14,12 +14,15 @@ def transcribe_audio():
         audio_data = recognizer.record(source) # audio file into audio_data, making it ready for transcription
         print(audio_data)
         try:
-            text = recognizer.recognize_google(audio_data)
+            text = recognizer.recognize_sphinx(audio_file)
+            print("Sphinx thinks you said " + text)
             return jsonify({"text": text})
         except sr.UnknownValueError:
+            print("Sphinx could not understand audio")
             return jsonify({"error": "Could not understand audio"}), 400
         except sr.RequestError as e:
-            return jsonify({"error": f"Could not request results; {e}"}), 500
+            print("Sphinx error; {0}".format(e))
+            return jsonify({"error": f"Could not request results; {e}"}), 500   
 
 if __name__ == "__main__":
     app.run(debug=True)
