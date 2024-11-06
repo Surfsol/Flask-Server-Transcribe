@@ -1,15 +1,25 @@
 from flask import Flask, request, jsonify
 import speech_recognition as sr #SpeechRecognition library assigned to sr
+import base64
+from io import BytesIO
 
 app = Flask(__name__) #??
 
 @app.route("/transcribe", methods=["POST"]) # only accpets post requests
 def transcribe_audio():
     print("1 Endpoint '/transcribe' was hit", request.files)
-    if "audio" not in request.files:
+    data = request.get_json()
+    print(data.keys())
+    #if "audio" not in request.files:
+    if "audio" not in data:
         return jsonify({"error": "No audio file provided"}), 400
     print("2 Endpoint audio found")
-    audio_file = request.files["audio"]
+    if (request.files["audio"]):
+        audio_file = request.files["audio"]
+    else:
+        audio_data = base64.b64decode(data["audio"])
+        audio_file = BytesIO(audio_data)
+    
     print("3 Endpoint audio found")
     recognizer = sr.Recognizer() # Opens audio file as an audio source, to recognize and record.
     with sr.AudioFile(audio_file) as source:
