@@ -10,17 +10,16 @@ def transcribe_audio():
     print("1 Endpoint '/transcribe' was hit", request.files)
     data = request.get_json()
     print(data.keys())
-    #if "audio" not in request.files:
-    if "audio" not in data:
-        return jsonify({"error": "No audio file provided"}), 400
-    print("2 Endpoint audio found")
-    if (request.files["audio"]):
+    if "audio" in request.files:
+        print("2 Endpoint audio found in request.files")
         audio_file = request.files["audio"]
-    else:
+    elif request.is_json and "audio" in request.get_json():
+        print("2 Endpoint audio found in request.get_json")
         audio_data = base64.b64decode(data["audio"])
         audio_file = BytesIO(audio_data)
-    
-    print("3 Endpoint audio found")
+    else:
+        return jsonify({"error": "No audio file provided"}), 400
+
     recognizer = sr.Recognizer() # Opens audio file as an audio source, to recognize and record.
     with sr.AudioFile(audio_file) as source:
         print("4 inside")
